@@ -11,37 +11,37 @@ public class Cache {
 	// 读写锁
 	private static ReentrantReadWriteLock REENTRANTREADWRITELOCK = new ReentrantReadWriteLock();
 	// 读锁
-	private static Lock r = REENTRANTREADWRITELOCK.readLock();
+	private static Lock READ = REENTRANTREADWRITELOCK.readLock();
 	// 写锁
-	private static Lock w = REENTRANTREADWRITELOCK.writeLock();
+	private static Lock WRITE = REENTRANTREADWRITELOCK.writeLock();
 
 	// 获取一个key对应的value
 	public static final Object get(String key) {
-		r.lock();
+		READ.lock();
 		try {
 			return CACHE.get(key);
 		} finally {
-			r.unlock();
+			READ.unlock();
 		}
 	}
 
 	// 设置key对应的value，并返回旧的value
 	public static final Object put(String key, Object value) {
-		w.lock();
+		WRITE.lock();
 		try {
 			return CACHE.put(key, value);
 		} finally {
-			w.unlock();
+			WRITE.unlock();
 		}
 	}
 
 	// 清空所有的内容
 	public static final void clear() {
-		w.lock();
+		WRITE.lock();
 		try {
 			CACHE.clear();
 		} finally {
-			w.unlock();
+			WRITE.unlock();
 		}
 	}
 
